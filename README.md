@@ -8,3 +8,7 @@ The Raspberry Pico needs configuration files for Renode to work properly.
 To add the Pico configuration files:
 1. Copy `rp2040_spinlock.py` and `rp2040_divider.py` to the `scripts/pydev` directory of your Renode installation.
 1. Copy `rpi_pico_rp2040_w.repl` to the `platforms/cpus` directory.
+
+
+Testing - Shem
+
