@@ -19,3 +19,9 @@ Activity 3: Just read a tutorial about taking measurements with a multimeter
   - Connect the multimeter power and ground back to the board
   - Turn on the power supply.
   - Record your measurments.
+
+Activity 4: For each scenario, we created multiple tasks within the same file called "hello_freertos.c" and measured the power consumption of each task.
+
+ - Task 1: Blink an LED using sleep_ms to delay iterations
+     We observed 3.2 V between Vsys and Vgnd and ~20 micro amps flowing accross the Vgnd terminal.
+     Using P = IV, P ~= 64 microWatts
