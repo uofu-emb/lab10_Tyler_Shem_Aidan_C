@@ -16,6 +16,10 @@
 int count = 0;
 bool on = false;
 
+#define task1 1
+#define task2 0
+#define task3 0
+
 #define MAIN_TASK_PRIORITY      ( tskIDLE_PRIORITY + 1UL )
 #define BLINK_TASK_PRIORITY     ( tskIDLE_PRIORITY + 2UL )
 #define MAIN_TASK_STACK_SIZE configMINIMAL_STACK_SIZE
@@ -40,15 +44,29 @@ void main_task(__unused void *params) {
         else putchar(c);
     }
 }
+void blinky_nothread(){
+    while(1){
+        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 1);
+        sleep_ms(100);
+        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 0);
+        sleep_ms(100);
+    }
+}
 
 int main( void )
 {
     stdio_init_all();
-    const char *rtos_name;
-    rtos_name = "FreeRTOS";
-    TaskHandle_t task;
-    xTaskCreate(main_task, "MainThread",
-                MAIN_TASK_STACK_SIZE, NULL, MAIN_TASK_PRIORITY, &task);
-    vTaskStartScheduler();
+    if(task1){
+        blinky_nothread();
+    }
+    if(task2){
+            const char *rtos_name;
+            rtos_name = "FreeRTOS";
+            TaskHandle_t task;
+            xTaskCreate(main_task, "MainThread",
+                        MAIN_TASK_STACK_SIZE, NULL, MAIN_TASK_PRIORITY, &task);
+            vTaskStartScheduler();
+    }
+  
     return 0;
 }
