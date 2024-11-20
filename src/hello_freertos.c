@@ -16,11 +16,14 @@
 int count = 0;
 bool on = false;
 
-#define TASK 1
+#define TASK 4
 
 #if TASK == 3
-#pragma GCC optimize ("O0")
+#pragma GCC optimize("O0")
 #endif
+
+#define IRQ_PIN 4
+bool led_state = false;
 
 #define MAIN_TASK_PRIORITY (tskIDLE_PRIORITY + 1UL)
 #define BLINK_TASK_PRIORITY (tskIDLE_PRIORITY + 2UL)
@@ -71,7 +74,7 @@ void busyloop()
     while (1)
     {
         uint32_t k;
-        for (int i = 0; i < 30)
+        for (int i = 0; i < 30; i)
         {
             uint32_t j = 0;
             j = ((~j >> i) + 1) * 27644437;
@@ -80,9 +83,10 @@ void busyloop()
     }
 }
 
-void gpio_interrupt()
+void gpio_interrupt(uint gpio, uint32_t event_mask)
 {
-
+    led_state = !led_state;
+    gpio_put(IRQ_PIN, led_state);
 }
 
 int main(void)
@@ -104,6 +108,16 @@ int main(void)
     busyloop();
 #elif TASK == 4
     /* Task 4 */
+
+    gpio_init(IRQ_PIN);                                                                                         // Setup IRQ Pin
+    gpio_set_dir(IRQ_PIN, GPIO_IN);                                                                             // Set IRQ Pin to be an input
+    gpio_put(IRQ_PIN, led_state);                                                                               // Set IRQ Pin off to start
+    gpio_set_irq_enabled_with_callback(IRQ_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, gpio_interrupt); // Setup interrupt to trigger when IRQ_PIN has rising or falling edge
+
+    while (1)
+    {
+        __wfi(); // Wait for interrupt in while loop
+    }
 #elif TASK == 5
     /* Task 5 */
 #elif TASK == 6
