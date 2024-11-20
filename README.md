@@ -9,7 +9,7 @@ Activity 2: Determine what the default values are for:
     They both reset to 0x1 upon reset meaning all clocks are on.
     
     - The clock enable registers ENABLED0 and ENABLED1 both reset to 0x1
-      ENABLE
+      ENABLED is actually two registers ENABLED0 and ENABLED1 and they both reset to 0x0
 Activity 3: Just read a tutorial about taking measurements with a multimeter
   - Turn off the power
   - Disconnect the multimeter power and ground from the board.
