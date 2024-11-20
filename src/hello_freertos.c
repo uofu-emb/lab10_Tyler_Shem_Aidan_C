@@ -16,7 +16,11 @@
 int count = 0;
 bool on = false;
 
-#define TASK 0
+#define TASK 1
+
+#if TASK == 3
+#pragma GCC optimize ("O0")
+#endif
 
 #define MAIN_TASK_PRIORITY (tskIDLE_PRIORITY + 1UL)
 #define BLINK_TASK_PRIORITY (tskIDLE_PRIORITY + 2UL)
@@ -62,20 +66,48 @@ void blinky_nothread()
     }
 }
 
+void busyloop()
+{
+    while (1)
+    {
+        uint32_t k;
+        for (int i = 0; i < 30)
+        {
+            uint32_t j = 0;
+            j = ((~j >> i) + 1) * 27644437;
+            k = j;
+        }
+    }
+}
+
+void gpio_interrupt()
+{
+
+}
+
 int main(void)
 {
     stdio_init_all();
-#if TASK == 0
+#if TASK == 1
+    /* Task 1 */
     blinky_nothread();
-#elif TASK == 1
+#elif TASK == 2
+    /* Task 2 */
     const char *rtos_name;
     rtos_name = "FreeRTOS";
     TaskHandle_t task;
     xTaskCreate(main_task, "MainThread",
                 MAIN_TASK_STACK_SIZE, NULL, MAIN_TASK_PRIORITY, &task);
     vTaskStartScheduler();
-#else 
-/* Task 3 */
+#elif TASK == 3
+    /* Task 3 */
+    busyloop();
+#elif TASK == 4
+    /* Task 4 */
+#elif TASK == 5
+    /* Task 5 */
+#elif TASK == 6
+    /* Task 6 */
 #endif
     return 0;
 }
