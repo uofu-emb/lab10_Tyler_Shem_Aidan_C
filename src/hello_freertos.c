@@ -16,36 +16,45 @@
 int count = 0;
 bool on = false;
 
-#define task1 1
-#define task2 0
-#define task3 0
+#define TASK 0
 
-#define MAIN_TASK_PRIORITY      ( tskIDLE_PRIORITY + 1UL )
-#define BLINK_TASK_PRIORITY     ( tskIDLE_PRIORITY + 2UL )
+#define MAIN_TASK_PRIORITY (tskIDLE_PRIORITY + 1UL)
+#define BLINK_TASK_PRIORITY (tskIDLE_PRIORITY + 2UL)
 #define MAIN_TASK_STACK_SIZE configMINIMAL_STACK_SIZE
 #define BLINK_TASK_STACK_SIZE configMINIMAL_STACK_SIZE
 
-void blink_task(__unused void *params) {
+void blink_task(__unused void *params)
+{
     hard_assert(cyw43_arch_init() == PICO_OK);
-    while (true) {
+    while (true)
+    {
         cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, on);
-        if (count++ % 11) on = !on;
+        if (count++ % 11)
+            on = !on;
         vTaskDelay(500);
     }
 }
 
-void main_task(__unused void *params) {
+void main_task(__unused void *params)
+{
     xTaskCreate(blink_task, "BlinkThread",
                 BLINK_TASK_STACK_SIZE, NULL, BLINK_TASK_PRIORITY, NULL);
     char c;
-    while(c = getchar()) {
-        if (c <= 'z' && c >= 'a') putchar(c - 32);
-        else if (c >= 'A' && c <= 'Z') putchar(c + 32);
-        else putchar(c);
+    while (c = getchar())
+    {
+        if (c <= 'z' && c >= 'a')
+            putchar(c - 32);
+        else if (c >= 'A' && c <= 'Z')
+            putchar(c + 32);
+        else
+            putchar(c);
     }
 }
-void blinky_nothread(){
-    while(1){
+
+void blinky_nothread()
+{
+    while (1)
+    {
         cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 1);
         sleep_ms(100);
         cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 0);
@@ -53,20 +62,20 @@ void blinky_nothread(){
     }
 }
 
-int main( void )
+int main(void)
 {
     stdio_init_all();
-    if(task1){
-        blinky_nothread();
-    }
-    if(task2){
-            const char *rtos_name;
-            rtos_name = "FreeRTOS";
-            TaskHandle_t task;
-            xTaskCreate(main_task, "MainThread",
-                        MAIN_TASK_STACK_SIZE, NULL, MAIN_TASK_PRIORITY, &task);
-            vTaskStartScheduler();
-    }
-  
+#if TASK == 0
+    blinky_nothread();
+#elif TASK == 1
+    const char *rtos_name;
+    rtos_name = "FreeRTOS";
+    TaskHandle_t task;
+    xTaskCreate(main_task, "MainThread",
+                MAIN_TASK_STACK_SIZE, NULL, MAIN_TASK_PRIORITY, &task);
+    vTaskStartScheduler();
+#else 
+/* Task 3 */
+#endif
     return 0;
 }
