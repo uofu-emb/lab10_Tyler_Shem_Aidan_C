@@ -1,8 +1,8 @@
-Process we followed in lab:
+## Process we followed in lab:
 
-Activity 1: We found the safe power supply voltage is between 1.8 - 5.5 V
+### Activity 1: We found the safe power supply voltage is between 1.8 - 5.5 V
 
-Activity 2: Determine what the default values are for:
+### Activity 2: Determine what the default values are for:
     - The two clock gate controlling registers:
       WAKE_EN
       SLEEP_EN
@@ -10,7 +10,7 @@ Activity 2: Determine what the default values are for:
     
     - The clock enable registers ENABLED0 and ENABLED1 both reset to 0x1
       ENABLED is actually two registers ENABLED0 and ENABLED1 and they both reset to 0x0
-Activity 3: Just read a tutorial about taking measurements with a multimeter
+### Activity 3: Just read a tutorial about taking measurements with a multimeter
   - Turn off the power
   - Disconnect the multimeter power and ground from the board.
   - Connect USB.
@@ -20,8 +20,13 @@ Activity 3: Just read a tutorial about taking measurements with a multimeter
   - Turn on the power supply.
   - Record your measurments.
 
-Activity 4: For each scenario, we created multiple tasks within the same file called "hello_freertos.c" and measured the power consumption of each task.
-
- - Task 1: Blink an LED using sleep_ms to delay iterations
+### Activity 4: For each scenario, we created multiple tasks within the same file called "hello_freertos.c" and measured the power consumption of each task.
+We are using a 2.2k resistor
+ - Task 1: Blink with Sleep
      We observed 3.2 V between Vsys and Vgnd and ~20 micro amps flowing accross the Vgnd terminal.
      Using P = IV, P ~= 64 microWatts
+ - Task 2: Blink with FreeRTOS Task
+ - Task 3: 100% CPU Utilization
+ - Task 4: Blink with Interrupt
+ - Task 5: Sleep Demo
+ - Task 6: Dormant Demo

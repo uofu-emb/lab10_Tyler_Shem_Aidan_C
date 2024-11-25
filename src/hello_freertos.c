@@ -16,7 +16,9 @@
 int count = 0;
 bool on = false;
 
-#define TASK 4
+#define LED_PIN 0
+
+#define TASK 2
 
 #if TASK == 3
 #pragma GCC optimize("O0")
@@ -35,26 +37,10 @@ void blink_task(__unused void *params)
     hard_assert(cyw43_arch_init() == PICO_OK);
     while (true)
     {
-        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, on);
+        gpio_put(LED_PIN, on);
         if (count++ % 11)
             on = !on;
         vTaskDelay(500);
-    }
-}
-
-void main_task(__unused void *params)
-{
-    xTaskCreate(blink_task, "BlinkThread",
-                BLINK_TASK_STACK_SIZE, NULL, BLINK_TASK_PRIORITY, NULL);
-    char c;
-    while (c = getchar())
-    {
-        if (c <= 'z' && c >= 'a')
-            putchar(c - 32);
-        else if (c >= 'A' && c <= 'Z')
-            putchar(c + 32);
-        else
-            putchar(c);
     }
 }
 
@@ -62,9 +48,9 @@ void blinky_nothread()
 {
     while (1)
     {
-        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 1);
+        gpio_put(LED_PIN, 1);
         sleep_ms(100);
-        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 0);
+        gpio_put(LED_PIN, 0);
         sleep_ms(100);
     }
 }
@@ -92,6 +78,9 @@ void gpio_interrupt(uint gpio, uint32_t event_mask)
 int main(void)
 {
     stdio_init_all();
+    gpio_init(LED_PIN);
+    gpio_set_dir(LED_PIN, GPIO_OUT);
+    gpio_put(LED_PIN, 0);
 #if TASK == 1
     /* Task 1 */
     blinky_nothread();
@@ -100,8 +89,7 @@ int main(void)
     const char *rtos_name;
     rtos_name = "FreeRTOS";
     TaskHandle_t task;
-    xTaskCreate(main_task, "MainThread",
-                MAIN_TASK_STACK_SIZE, NULL, MAIN_TASK_PRIORITY, &task);
+    xTaskCreate(blink_task, "BlinkThread", BLINK_TASK_STACK_SIZE, NULL, BLINK_TASK_PRIORITY, &task);
     vTaskStartScheduler();
 #elif TASK == 3
     /* Task 3 */
