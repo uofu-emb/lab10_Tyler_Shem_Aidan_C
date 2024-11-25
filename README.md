@@ -23,10 +23,20 @@
 ### Activity 4: For each scenario, we created multiple tasks within the same file called "hello_freertos.c" and measured the power consumption of each task.
 We are using a 2.2k resistor
  - Task 1: Blink with Sleep
-     We observed 3.2 V between Vsys and Vgnd and ~20 micro amps flowing accross the Vgnd terminal.
-     Using P = IV, P ~= 64 microWatts
+    We observed 3.3 V between Vsys and Vgnd and ~35 micro amps flowing accross the Vgnd terminal.
+    Using P = IV, P ~= 115.5 microWatts
  - Task 2: Blink with FreeRTOS Task
+    We observed 3.3 V between Vsys and Vgnd and ~40 mA flowing accross the Vgnd terminal.
+    Using P = IV, P ~= 132 mA
  - Task 3: 100% CPU Utilization
+    We observed 3.3 V between Vsys and Vgnd and ~28.7 mA flowing accross the Vgnd terminal.
+    Using P = IV, P ~= 95 mW
  - Task 4: Blink with Interrupt
+    We observed 3.3 V between Vsys and Vgnd and ~33.8 mA flowing accross the Vgnd terminal.
+    Using P = IV, P ~= 112 mW
  - Task 5: Sleep Demo
+    We observed 3.3 V between Vsys and Vgnd and ~ mA flowing accross the Vgnd terminal.
+    Using P = IV, P ~=  mW
  - Task 6: Dormant Demo
+    We observed 3.3 V between Vsys and Vgnd and ~ mA flowing accross the Vgnd terminal.
+    Using P = IV, P ~=  mW

@@ -18,7 +18,7 @@ bool on = false;
 
 #define LED_PIN 0
 
-#define TASK 2
+#define TASK 4
 
 #if TASK == 3
 #pragma GCC optimize("O0")
@@ -72,7 +72,7 @@ void busyloop()
 void gpio_interrupt(uint gpio, uint32_t event_mask)
 {
     led_state = !led_state;
-    gpio_put(IRQ_PIN, led_state);
+    gpio_put(LED_PIN, led_state);
 }
 
 int main(void)
@@ -96,10 +96,8 @@ int main(void)
     busyloop();
 #elif TASK == 4
     /* Task 4 */
-
     gpio_init(IRQ_PIN);                                                                                         // Setup IRQ Pin
     gpio_set_dir(IRQ_PIN, GPIO_IN);                                                                             // Set IRQ Pin to be an input
-    gpio_put(IRQ_PIN, led_state);                                                                               // Set IRQ Pin off to start
     gpio_set_irq_enabled_with_callback(IRQ_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, gpio_interrupt); // Setup interrupt to trigger when IRQ_PIN has rising or falling edge
 
     while (1)
