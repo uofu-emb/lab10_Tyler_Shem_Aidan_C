@@ -35,8 +35,10 @@ We are using a 2.2k resistor
     We observed 3.3 V between Vsys and Vgnd and ~33.8 mA flowing accross the Vgnd terminal.
     Using P = IV, P ~= 112 mW
  - Task 5: Sleep Demo
-    We observed 3.3 V between Vsys and Vgnd and ~ mA flowing accross the Vgnd terminal.
-    Using P = IV, P ~=  mW
+    We observed 3.3 V between Vsys and Vgnd and ~30 mA flowing accross the Vgnd terminal.
+    This dropped to ~2.4 mA after sleep mode started.
+    Using P = IV, P ~= 100 mW before sleep, ~= 8 mW after.
  - Task 6: Dormant Demo
-    We observed 3.3 V between Vsys and Vgnd and ~ mA flowing accross the Vgnd terminal.
-    Using P = IV, P ~=  mW
+    We observed 3.3 V between Vsys and Vgnd and ~30 mA flowing accross the Vgnd terminal.
+    This dropped to ~1.2 mA after dormant mode started.
+    Using P = IV, P ~= 100 mW before dormant, ~= 4 mW after.
